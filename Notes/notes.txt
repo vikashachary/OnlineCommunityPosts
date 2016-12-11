@@ -1,0 +1,25 @@
+let Badges            = GetContent.getParsedData("Badges.xml");
+let Comments          = GetContent.getParsedData("Comments.xml");
+let PostHistory       = GetContent.getParsedData("PostHistory.xml");
+let PostLinks         = GetContent.getParsedData("PostLinks.xml");
+let Posts             = GetContent.getParsedData("Posts.xml");
+let Tags              = GetContent.getParsedData("Tags.xml");
+let Users             = GetContent.getParsedData("Users.xml");
+let Votes             = GetContent.getParsedData("Votes.xml");
+
+// insert badge
+CREATE (a:Badge {Id:"5643",UserId:"3317",Name:"Editor",Date:"2015-10-18T01:21:49.447",Class:"3",TagBased:"False"})
+
+// insert User
+CREATE (u:User { Id:"1" ,Reputation:"101" ,CreationDate:"2015-01-20T18:29:26.400" ,DisplayName:"Adam Lear" ,LastAccessDate:"2016-06-10T22:50:28.640" ,Location:"New York, NY" ,AboutMe:"&#xA;&#xA;&lt;p&gt;Developer at Stack Overflow. Canadian working in the American idiom.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;Previously:&lt;/p&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;elected moderator on Stack Overflow and Programmers SE&lt;/li&gt;&#xA;&lt;li&gt;community manager at Stack Overflow&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&lt;p&gt;Email me a link to your favorite Wikipedia article: &lt;code&gt;adam@stackoverflow.com&lt;/code&gt;.&lt;/p&gt;&#xA;" ,Views:"28" ,UpVotes:"0" ,DownVotes:"0" ,ProfileImageUrl:"https://i.stack.imgur.com/ZJCbe.jpg?s:128&amp;g:1" ,Age:"33" ,AccountId:"37099"})
+
+match (a:User) where a.DisplayName="Adam Lear" return a
+// update
+match (a {Id:"5643",UserId:"3317"}) SET a.UserId = '1' return a   
+// create relationship user - badge
+MATCH (u:User {DisplayName:"Adam Lear"}), (b:Badge {UserId:u.Id}) CREATE (u)-[:HAS_Badge]->(b) 
+
+// delete element
+MATCH (u:User {DisplayName:"Adam Lear"})
+DETACH DELETE u
+
